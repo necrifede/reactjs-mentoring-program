@@ -1,4 +1,4 @@
-// import logo from "./logo.svg";
+import logo from "./logo.svg";
 import "./App.css";
 import FunctionalComp from "./components/FunctionalComp";
 import ClassComp from "./components/ClassComp";
@@ -20,8 +20,15 @@ function App() {
                     <ClassPureComp />
                 </li>
             </ul>
+            <img src={logo} className="App-logo" alt="logo" />
+            <div>t1</div>
+            <div>{true}</div>
+            <div>{false}</div>
+            <div>{null}</div>
+            <div>{undefined}</div>
+            <div>{JSON.stringify({})}</div>
+            <div>t5</div>
             {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
