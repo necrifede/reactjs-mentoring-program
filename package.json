@@ -8,8 +8,8 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-        "build": "webpack --progress --config webpack.production.js",
-        "start": "webpack-dev-server --progress  --config webpack.development.js"
+        "build": "webpack --progress --config production.webpack.config.js",
+        "start": "webpack-dev-server --progress  --config development.webpack.config.js"
     },
     "dependencies": {
         "react": "^18.1.0",
