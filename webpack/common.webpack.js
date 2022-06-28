@@ -1,13 +1,5 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-
 module.exports = {
-    mode: "development",
     entry: "./src/init.js",
-    output: {
-        path: path.resolve(__dirname, "dist"),
-        filename: "[name].bundle.js",
-    },
     resolve: { extensions: [".js", ".jsx"] },
     module: {
         rules: [
@@ -15,7 +7,9 @@ module.exports = {
                 test: /\.jsx?$/,
                 loader: "babel-loader",
                 exclude: [/node_modules/],
-                options: { presets: ["@babel/preset-env", ["@babel/preset-react", { runtime: "automatic" }]] },
+                options: {
+                    presets: ["@babel/preset-env", ["@babel/preset-react", { runtime: "automatic" }]],
+                },
             },
             {
                 test: /\.(ttf|eot|svg|woff|png)$/,
@@ -27,11 +21,6 @@ module.exports = {
             },
         ],
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: "./public/index.html",
-        }),
-    ],
     infrastructureLogging: {
         colors: true,
     },
