@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Logo from "./Logo";
-import MovieModal from "./MovieModal";
+import AddEditMovieModal from "./AddEditMovieModal";
 import { Modal } from "react-bootstrap";
 
 const AddPanel = () => {
@@ -17,7 +16,7 @@ const AddPanel = () => {
                 <Button variant="primary" onClick={() => setShow(true)}>
                     + Add Movie
                 </Button>
-                <MovieModal show={show} hideFunction={() => setShow(false)} />
+                <AddEditMovieModal show={show} hideFunction={() => setShow(false)} />
             </div>
         </div>
     );

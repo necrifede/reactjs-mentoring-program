@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Form, Modal } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 
-const MovieModal = ({ show = false, hideFunction = () => {} }) => (
+const AddEditMovieModal = ({ show = false, hideFunction = () => {} }) => (
     <Modal show={show} onHide={hideFunction}>
         <Modal.Header closeButton>Add/Edit Movie</Modal.Header>
         <Modal.Body>
@@ -44,9 +44,9 @@ const MovieModal = ({ show = false, hideFunction = () => {} }) => (
     </Modal>
 );
 
-MovieModal.propTypes = {
+AddEditMovieModal.propTypes = {
     show: PropTypes.bool,
     hideFunction: PropTypes.func,
 };
 
-export default MovieModal;
+export default AddEditMovieModal;
