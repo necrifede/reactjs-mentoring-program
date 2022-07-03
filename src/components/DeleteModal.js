@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 
-const DeleteModal = ({ show = false, hideFunction = () => {} }) => (
+const DeleteModal = ({ show = false, hideFunction = () => {}, action = () => {} }) => (
     <Modal show={show} onHide={hideFunction}>
         <Modal.Header closeButton>
             <Modal.Title>Delete Movie</Modal.Title>
@@ -12,7 +12,13 @@ const DeleteModal = ({ show = false, hideFunction = () => {} }) => (
             <Button variant="secondary" onClick={hideFunction}>
                 Close
             </Button>
-            <Button variant="primary" onClick={hideFunction}>
+            <Button
+                variant="primary"
+                onClick={() => {
+                    action();
+                    hideFunction();
+                }}
+            >
                 confirm
             </Button>
         </Modal.Footer>
