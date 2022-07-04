@@ -1,21 +1,30 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Button, Col, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button } from "react-bootstrap";
 import Logo from "./Logo";
+import AddEditMovieModal from "./AddEditMovieModal";
+import { Modal } from "react-bootstrap";
+import { PropTypes } from 'prop-types';
 
-const AddPanel = () => {
+const AddPanel = ({ addMovie = () => {} }) => {
+    const [show, setShow] = useState(false);
+
     return (
         <div className="d-flex">
             <div className="me-auto p-2">
                 <Logo />
             </div>
             <div>
-                <Button>+ Add Movie</Button>
+                <Button variant="primary" onClick={() => setShow(true)}>
+                    + Add Movie
+                </Button>
+                <AddEditMovieModal show={show} hideFunction={() => setShow(false)} actionMovie={addMovie} />
             </div>
         </div>
     );
 };
 
-AddPanel.propTypes = {};
+AddPanel.propTypes = {
+    addMovie: PropTypes.func,
+};
 
 export default AddPanel;

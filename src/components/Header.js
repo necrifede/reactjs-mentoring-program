@@ -4,11 +4,11 @@ import { Col, Row } from "react-bootstrap";
 import AddPanel from "./AddPanel";
 import SearchPanel from "./SearchPanel";
 
-const Header = (props) => {
+const Header = ({ addMovie = () => {} }) => {
     return (
         <Row>
             <Col>
-                <AddPanel />
+                <AddPanel addMovie={addMovie} />
                 <SearchPanel />
             </Col>
         </Row>
