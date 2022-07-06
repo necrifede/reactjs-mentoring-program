@@ -1,10 +1,10 @@
 import { PropTypes } from "prop-types";
 
-export const MovieProptypes = {
+export const MovieShape = {
     id: PropTypes.string.isRequired,
     title: PropTypes.string,
     url: PropTypes.string,
-    genre: PropTypes.arrayOf(PropTypes.string),
+    genres: PropTypes.arrayOf(PropTypes.string),
     date: PropTypes.object,
     rating: PropTypes.string,
     runtime: PropTypes.string,

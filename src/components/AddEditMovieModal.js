@@ -12,8 +12,8 @@ const reducer = (state, action) => {
             return { ...state, title: action.payload };
         case "url":
             return { ...state, url: action.payload };
-        case "genre":
-            return { ...state, genre: action.payload };
+        case "genres":
+            return { ...state, genres: action.payload };
         case "date":
             return { ...state, date: action.payload };
         case "rating":
@@ -51,8 +51,8 @@ const AddEditMovieModal = ({ show = false, hideFunction = () => {}, actionMovie 
                         onChange={(e) => dispatch({ type: "url", payload: e.target.value })}
                     />
                     <br />
-                    <label htmlFor="movie-genre">Genre</label>
-                    <select id="movie-genre">
+                    <label htmlFor="movie-genres">Genres</label>
+                    <select id="movie-genres">
                         <option>Genre 1</option>
                         <option>Genre 2</option>
                     </select>
