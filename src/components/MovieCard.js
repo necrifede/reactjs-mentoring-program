@@ -1,60 +1,77 @@
-import React, { useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Card, Col } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import DeleteModal from "./DeleteModal";
 import AddEditMovieModal from "./AddEditMovieModal";
-import { MovieProptypes } from "./types";
+import { MovieShape } from "./shapes";
 import { getYear } from "date-fns/esm";
+import { useSelectedMovie } from "../hooks/useSelectedMovie";
+
+const toggleButtonId = "dropdown-toggle-button-actions";
 
 const MovieCard = ({
-    movie: { id, title = "", genre = [], date, url = "", ...movie } = {},
+    movie: { id, title = "", genres = [], date, url = "", ...movie } = {},
     deleteMovie = () => {},
     editMovie = () => {},
 }) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [, setMovieSelected] = useSelectedMovie();
 
     return (
         <Col>
-            <Card>
+            <Card
+                onClick={(e) => {
+                    const classes = e.target.classList;
+                    // TODO: find a better way to avoid click over these classes
+                    if (!classes.contains("dropdown-toggle") && !classes.contains("dropdown-item")) {
+                        setMovieSelected({ id, title, genres, date, url, ...movie });
+                    }
+                }}
+            >
                 <Card.Img variant="top" src={url} />
                 <Card.Body>
                     <Card.Title>{title}</Card.Title>
                     <Card.Subtitle>{getYear(date) ?? ""}</Card.Subtitle>
-                    {genre.map((genre) => (
+                    {genres.map((genre) => (
                         <Button key={genre}>{genre}</Button>
                     ))}
                     <Dropdown>
-                        <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
+                        <Dropdown.Toggle id={toggleButtonId} variant="secondary">
                             Actions
                         </Dropdown.Toggle>
 
-                        <Dropdown.Menu variant="dark">
+                        <Dropdown.Menu>
                             <Dropdown.Item onClick={() => setShowEditModal(true)}>Edit</Dropdown.Item>
                             <Dropdown.Item onClick={() => setShowDeleteModal(true)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Card.Body>
             </Card>
-            <DeleteModal
-                show={showDeleteModal}
-                hideFunction={() => setShowDeleteModal(false)}
-                action={() => deleteMovie({ id })}
-            />
-            <AddEditMovieModal
-                show={showEditModal}
-                hideFunction={() => setShowEditModal(false)}
-                movie={{ id, title, genre, date, url, ...movie }}
-                actionMovie={editMovie}
-            />
+
+            {showDeleteModal && (
+                <DeleteModal
+                    show={showDeleteModal}
+                    hideFunction={() => setShowDeleteModal(false)}
+                    action={() => deleteMovie({ id })}
+                />
+            )}
+            {showEditModal && (
+                <AddEditMovieModal
+                    show={showEditModal}
+                    hideFunction={() => setShowEditModal(false)}
+                    movie={{ id, title, genres, date, url, ...movie }}
+                    actionMovie={editMovie}
+                />
+            )}
         </Col>
     );
 };
 
 MovieCard.propTypes = {
-    movie: PropTypes.shape(MovieProptypes),
+    movie: PropTypes.shape(MovieShape),
     editMovie: PropTypes.func,
     deleteMovie: PropTypes.func,
 };
