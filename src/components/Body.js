@@ -4,7 +4,7 @@ import MovieList from "./MovieList";
 import { Col, Row } from "react-bootstrap";
 import MoviesStatus from "./MoviesStatus";
 import MoviesAction from "./MoviesAction";
-import MovieCard from "./MovieCard";
+import { MovieShape } from "./shapes";
 
 const Body = ({ editMovie = () => {}, deleteMovie = () => {}, movies = [] }) => (
     <>
@@ -17,7 +17,7 @@ const Body = ({ editMovie = () => {}, deleteMovie = () => {}, movies = [] }) => 
 Body.propTypes = {
     editMovie: PropTypes.func,
     deleteMovie: PropTypes.func,
-    movies: PropTypes.arrayOf(PropTypes.shape(MovieCard.propTypes)),
+    movies: PropTypes.arrayOf(PropTypes.shape(MovieShape)),
 };
 
 export default Body;
