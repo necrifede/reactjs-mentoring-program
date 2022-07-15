@@ -6,7 +6,8 @@ import DeleteModal from "./DeleteModal";
 import AddEditMovieModal from "./AddEditMovieModal";
 import { MovieShape } from "./shapes";
 import { getYear } from "date-fns/esm";
-import { useSelectedMovie } from "../hooks/useSelectedMovie";
+import { useDispatch } from "react-redux";
+import { setSelectedMovie } from "../store";
 
 const toggleButtonId = "dropdown-toggle-button-actions";
 
@@ -17,7 +18,7 @@ const MovieCard = ({
 }) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [, setMovieSelected] = useSelectedMovie();
+    const dispatch = useDispatch();
 
     return (
         <Col>
@@ -26,7 +27,7 @@ const MovieCard = ({
                     const classes = e.target.classList;
                     // TODO: find a better way to avoid click over these classes
                     if (!classes.contains("dropdown-toggle") && !classes.contains("dropdown-item")) {
-                        setMovieSelected({ id, title, genres, release_date, poster_path, ...movie });
+                        dispatch(setSelectedMovie({ id, title, genres, release_date, poster_path, ...movie }));
                     }
                 }}
             >

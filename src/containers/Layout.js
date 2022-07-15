@@ -4,17 +4,23 @@ import Container from "react-bootstrap/Container";
 import Header from "../components/Header";
 import Body from "../components/Body";
 import Footer from "../components/Footer";
-import { ContextMovieDetails, values } from "../context/ContextMovieDetails";
 import { get } from "axios";
+import { useDispatch } from "react-redux";
+import { compose } from "ramda";
+import { setMovies as setMoviesAction } from "../store";
+
+const formatMovies = ({ data = [], ...rest }) => ({
+    ...rest,
+    data: data.map(({ release_date, ...movie }) => ({ ...movie, release_date: new Date(release_date) })),
+});
 
 const Layout = () => {
-    const [movies, setMovies] = useState([]);
-    const [defaultMovie, setMovie] = useState(undefined);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const retrieveMovies = async () => {
-            const { data: { data } = {} } = await get("http://localhost:4000/movies");
-            setMovies(data.map(({ release_date, ...movie }) => ({ ...movie, release_date: new Date(release_date) })));
+            const { data = {} } = await get("http://localhost:4000/movies");
+            compose(dispatch, setMoviesAction, formatMovies)(data);
         };
         retrieveMovies();
     }, []);
@@ -25,13 +31,11 @@ const Layout = () => {
     const deleteMovie = (movie) => setMovies(movies.filter(({ id }) => id != movie?.id));
 
     return (
-        <ContextMovieDetails.Provider value={[defaultMovie, setMovie]}>
-            <Container>
-                <Header addMovie={addMovie} />
-                <Body editMovie={editMovie} deleteMovie={deleteMovie} movies={movies} />
-                <Footer />
-            </Container>
-        </ContextMovieDetails.Provider>
+        <Container>
+            <Header addMovie={addMovie} />
+            <Body editMovie={editMovie} deleteMovie={deleteMovie} />
+            <Footer />
+        </Container>
     );
 };
 
