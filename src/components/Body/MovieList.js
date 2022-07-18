@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import MovieCard from "./MovieCard";
-import { Row } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import React from 'react';
+import PropTypes from 'prop-types';
+import MovieCard from './MovieCard';
+import { Row } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 const MovieList = ({ deleteMovie = () => {}, editMovie = () => {} }) => {
     const movies = useSelector((state) => state.movies.data);

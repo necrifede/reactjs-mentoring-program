@@ -1,10 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import MovieList from "./MovieList";
-import { Col, Row } from "react-bootstrap";
-import MoviesStatus from "./MoviesStatus";
-import MoviesAction from "./MoviesAction";
-import { MovieShape } from "./shapes";
+import React from 'react';
+import PropTypes from 'prop-types';
+import MovieList from './MovieList';
+import MoviesStatus from './MoviesStatus';
+import MoviesAction from './MoviesAction';
 
 const Body = ({ editMovie = () => {}, deleteMovie = () => {} }) => (
     <>

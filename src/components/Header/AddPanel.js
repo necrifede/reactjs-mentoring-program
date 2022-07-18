@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Button } from "react-bootstrap";
-import Logo from "./Logo";
-import AddEditMovieModal from "./AddEditMovieModal";
-import { Modal } from "react-bootstrap";
+import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
+import Logo from '../Logo';
+import AddEditMovieModal from '../AddEditMovieModal';
+import { Modal } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
 const AddPanel = ({ addMovie = () => {} }) => {

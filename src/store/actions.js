@@ -1,6 +1,6 @@
-import { actionTypes as actionMovies } from "./reducerMovies";
-import { actionTypes as actionSelectedMovie } from "./reducerSelectedMovie";
-import { actionTypes as actionCriterias } from "./reducerCriterias";
+import { actionTypes as actionMovies } from './reducerMovies';
+import { actionTypes as actionSelectedMovie } from './reducerSelectedMovie';
+import { actionTypes as actionCriterias } from './reducerCriterias';
 
 export const fetchMoviesAction = (payload) => ({ type: actionMovies.FETCH_MOVIES, payload });
 export const setMoviesAction = (movies) => ({ type: actionMovies.SET_MOVIES, payload: movies });

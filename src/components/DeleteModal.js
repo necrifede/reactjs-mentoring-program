@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Button, Modal } from "react-bootstrap";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button, Modal } from 'react-bootstrap';
 
 const DeleteModal = ({ show = false, hideFunction = () => {}, action = () => {} }) => (
     <Modal show={show} onHide={hideFunction}>

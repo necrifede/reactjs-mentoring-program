@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import Container from "react-bootstrap/Container";
-import Header from "../components/Header";
-import Body from "../components/Body";
-import Footer from "../components/Footer";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchMoviesAction } from "../store";
-import { URL } from "../utils";
+import React, { useEffect } from 'react';
+import Container from 'react-bootstrap/Container';
+import Header from '../components/Header/Header';
+import Body from '../components/Body/Body';
+import Footer from '../components/Footer';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMoviesAction } from '../store';
+import { URL } from '../utils';
 
 const Layout = () => {
     const dispatch = useDispatch();

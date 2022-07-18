@@ -1,8 +1,8 @@
 export const actionTypes = {
-    SET_MOVIES: "SET_MOVIES",
-    CLEAR: "CLEAR",
-    FETCH_MOVIES: "FETCH_MOVIES",
-    MOVIES_FETCH_FAILED: "MOVIES_FETCH_FAILED",
+    SET_MOVIES: 'SET_MOVIES',
+    CLEAR: 'CLEAR',
+    FETCH_MOVIES: 'FETCH_MOVIES',
+    MOVIES_FETCH_FAILED: 'MOVIES_FETCH_FAILED',
 };
 
 const initialState = {
@@ -19,7 +19,7 @@ export const moviesReducer = (state = initialState, action) => {
         case actionTypes.CLEAR:
             return initialState;
         case actionTypes.MOVIES_FETCH_FAILED:
-            console.error("Error when fetch movies: ", action?.error?.message);
+            console.error('Error when fetch movies: ', action?.error?.message);
             return state;
         default:
             return state;

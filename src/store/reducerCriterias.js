@@ -1,12 +1,12 @@
 export const actionTypes = {
-    SET_CRITERIA_FILTER: "SET_CRITERIA_FILTER",
-    SET_CRITERIA_SORT_BY: "SET_CRITERIA_SORT_BY",
-    SET_CRITERIA_SORT_ORDER: "SET_CRITERIA_SORT_ORDER",
+    SET_CRITERIA_FILTER: 'SET_CRITERIA_FILTER',
+    SET_CRITERIA_SORT_BY: 'SET_CRITERIA_SORT_BY',
+    SET_CRITERIA_SORT_ORDER: 'SET_CRITERIA_SORT_ORDER',
 };
 
 const initialState = {
-    sortBy: "",
-    sortOrder: "",
+    sortBy: '',
+    sortOrder: '',
     filter: [],
 };
 
