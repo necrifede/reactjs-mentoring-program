@@ -1,29 +1,19 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Header from "../components/Header";
 import Body from "../components/Body";
 import Footer from "../components/Footer";
-import { get } from "axios";
-import { useDispatch } from "react-redux";
-import { compose } from "ramda";
-import { setMovies as setMoviesAction } from "../store";
-
-const formatMovies = ({ data = [], ...rest }) => ({
-    ...rest,
-    data: data.map(({ release_date, ...movie }) => ({ ...movie, release_date: new Date(release_date) })),
-});
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMoviesAction } from "../store";
+import { URL } from "../utils";
 
 const Layout = () => {
     const dispatch = useDispatch();
+    const criterias = useSelector((state) => state.criterias);
 
     useEffect(() => {
-        const retrieveMovies = async () => {
-            const { data = {} } = await get("http://localhost:4000/movies");
-            compose(dispatch, setMoviesAction, formatMovies)(data);
-        };
-        retrieveMovies();
-    }, []);
+        dispatch(fetchMoviesAction({ url: URL, criterias }));
+    }, [criterias]);
 
     const addMovie = (movie) => setMovies([movie, ...movies]);
     const editMovie = ({ id: toEdit, ...editedMovie }) =>
