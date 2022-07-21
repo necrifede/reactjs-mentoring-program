@@ -1,114 +1,227 @@
 import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Modal } from 'react-bootstrap';
+import { Col, Container, Form as FormBootstrap, Modal, Row } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import uniqid from 'uniqid';
 import { format, parse } from 'date-fns/esm';
 import { MovieShape } from './shapes';
+import { Field, Formik } from 'formik';
+import * as Yup from 'yup';
+import { useSelector } from 'react-redux';
+import Select from 'react-select';
+import { getAllGenders } from '../utils';
+import { prop } from 'ramda';
+const { Label, Text, Group, Control } = FormBootstrap;
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case 'title':
-            return { ...state, title: action.payload };
-        case 'genres':
-            return { ...state, genres: action.payload };
-        case 'release_date':
-            return { ...state, release_date: action.payload };
-        case 'poster_path':
-            return { ...state, poster_path: action.payload };
-        case 'overview':
-            return { ...state, overview: action.payload };
-        case 'vote_average':
-            return { ...state, vote_average: action.payload };
-        case 'runtime':
-            return { ...state, runtime: action.payload };
-        default:
-            return state;
-    }
+const SignupSchema = Yup.object().shape({
+    title: Yup.string().required('Is required'),
+    poster_path: Yup.string().required('Is required'),
+    genres: Yup.array().min(1, "You can't leave this blank.").required("You can't leave this blank.").nullable(),
+    release_date: Yup.string(),
+    vote_average: Yup.lazy((value) => (value === '' ? Yup.string() : Yup.number())),
+    runtime: Yup.lazy((value) =>
+        value === '' ? Yup.string().required('Is required') : Yup.number().required('Is required')
+    ),
+    overview: Yup.string().required('Is required'),
+});
+
+const initials = {
+    title: '',
+    poster_path: '',
+    genres: [],
+    release_date: '',
+    vote_average: '',
+    runtime: '',
+    overview: '',
 };
 
-const AddEditMovieModal = ({ show = false, hideFunction = () => {}, actionMovie = () => {}, movie: initial = {} }) => {
-    const [movie, dispatch] = useReducer(reducer, initial);
+const AddEditMovieModal = ({ show = false, hideFunction = () => {}, actionMovie = () => {}, movie = initials }) => {
+    const movies = useSelector((state) => state.movies.data);
+    const allGenres = getAllGenders(movies);
+    const genreOptions = allGenres?.map((genre) => ({ value: genre, label: genre })) ?? [];
 
     return (
-        <Modal show={show} onHide={hideFunction}>
-            <Modal.Header closeButton>Add/Edit Movie</Modal.Header>
-            <Modal.Body>
-                <form>
-                    <label htmlFor="movie-title">Title</label>
-                    <input
-                        id="movie-title"
-                        type="input"
-                        value={movie.title ?? ''}
-                        onChange={(e) => dispatch({ type: 'title', payload: e.target.value })}
-                    />
-                    <br />
-                    <label htmlFor="movie-url">Movie Url</label>
-                    <input
-                        id="movie-poster-path"
-                        type="input"
-                        value={movie.poster_path ?? ''}
-                        onChange={(e) => dispatch({ type: 'poster_path', payload: e.target.value })}
-                    />
-                    <br />
-                    <label htmlFor="movie-genres">Genres</label>
-                    <select id="movie-genres">
-                        {movie?.genres?.map((genre) => (
-                            <option key={genre} value={genre}>
-                                {genre}
-                            </option>
-                        ))}
-                    </select>
-                    <br />
-                    <label htmlFor="movie-release-date">Release Date</label>
-                    <input
-                        id="movie-release-date"
-                        type="date"
-                        value={format(movie?.release_date ?? new Date(), 'yyyy-MM-dd')}
-                        onChange={(e) =>
-                            dispatch({ type: 'release_date', payload: parse(e.target.value, 'yyyy-MM-dd', new Date()) })
-                        }
-                    />
-                    <br />
-                    <label htmlFor="movie-rating">Rating</label>
-                    <input
-                        id="movie-rating"
-                        type="input"
-                        value={movie.vote_average ?? ''}
-                        onChange={(e) => dispatch({ type: 'vote_average', payload: e.target.value })}
-                    />
-                    <br />
-                    <label htmlFor="movie-runtime">Runtime</label>
-                    <input
-                        id="movie-runtime"
-                        type="input"
-                        value={movie.runtime ?? ''}
-                        onChange={(e) => dispatch({ type: 'runtime', payload: e.target.value })}
-                    />
-                    <br />
-                    <label htmlFor="movie-overview">Overview</label>
-                    <input
-                        id="movie-overview"
-                        type="text"
-                        value={movie.overview ?? ''}
-                        onChange={(e) => dispatch({ type: 'overview', payload: e.target.value })}
-                    />
-                </form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={hideFunction}>
-                    Close
-                </Button>
-                <Button
-                    variant="primary"
-                    onClick={() => {
-                        actionMovie({ ...movie, id: movie?.id ?? uniqid() });
-                        hideFunction();
-                    }}
-                >
-                    Save Changes
-                </Button>
-            </Modal.Footer>
+        <Modal show={show} size="lg" onHide={hideFunction}>
+            <Formik
+                initialValues={movie}
+                validationSchema={SignupSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                    console.log('values: ', values);
+                    // TODO: control vote_average and runtime when it is empty string ''
+                    setTimeout(() => {
+                        alert(JSON.stringify(values, null, 2));
+                        setSubmitting(false);
+                    }, 400);
+                }}
+            >
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    handleReset,
+                    setFieldValue,
+                }) => (
+                    <>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add/Edit Movie</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Container>
+                                <Row>
+                                    <Col lg={7}>
+                                        <Group className="mb-3" controlId="formBasicEmail">
+                                            <Label>Title Movie</Label>
+                                            <Control
+                                                type="input"
+                                                name="title"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.title}
+                                                placeholder="Title Movie"
+                                            />
+                                            <Text className="text-danger">
+                                                {errors.title && touched.title && errors.title}
+                                            </Text>
+                                        </Group>
+                                    </Col>
+                                    <Col>
+                                        <Group className="mb-3" controlId="formBasicEmail">
+                                            <Label>Release Date</Label>
+                                            <Control
+                                                type="date"
+                                                name="release_date"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.release_date}
+                                                placeholder="Select Date"
+                                            />
+                                            <Text className="text-danger">
+                                                {errors.release_date && touched.release_date && errors.release_date}
+                                            </Text>
+                                        </Group>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col lg={7}>
+                                        <Group className="mb-3" controlId="formBasicEmail">
+                                            <Label>Poster URL</Label>
+                                            <Control
+                                                type="input"
+                                                name="poster_path"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.poster_path}
+                                                placeholder="https://"
+                                            />
+                                            <Text className="text-danger">
+                                                {errors.poster_path && touched.poster_path && errors.poster_path}
+                                            </Text>
+                                        </Group>
+                                    </Col>
+                                    <Col>
+                                        <Group className="mb-3" controlId="formBasicEmail">
+                                            <Label>Rating</Label>
+                                            <Control
+                                                type="number"
+                                                name="vote_average"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.vote_average}
+                                                placeholder="example 7.8"
+                                            />
+                                            <Text className="text-danger">
+                                                {errors.vote_average && touched.vote_average && errors.vote_average}
+                                            </Text>
+                                        </Group>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col lg={7}>
+                                        <Group className="mb-3" controlId="formBasicEmail">
+                                            <Label>Genres</Label>
+                                            <Select
+                                                isMulti
+                                                closeMenuOnSelect={false}
+                                                // defaultValue={[]}
+                                                name="genres"
+                                                // onChange={(e) => {
+                                                //     console.log('e: ', e);
+                                                //     // handleChange(e.map(prop('value')));
+                                                //     setValues({ genres: e.map(prop('value')) });
+                                                // }}
+                                                onChange={(option) =>
+                                                    setFieldValue('genres', option.map(prop('value')))
+                                                }
+                                                isLoading={!allGenres}
+                                                options={genreOptions}
+                                                placeholder="Select Genres"
+                                            />
+                                            <Text className="text-danger">
+                                                {errors.genres && touched.genres && errors.genres}
+                                            </Text>
+                                        </Group>
+                                    </Col>
+                                    <Col>
+                                        <Group className="mb-3" controlId="formBasicEmail">
+                                            <Label>Runtime</Label>
+                                            <Control
+                                                type="number"
+                                                name="runtime"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.runtime}
+                                                placeholder="Minutes"
+                                            />
+                                            <Text className="text-danger">
+                                                {errors.runtime && touched.runtime && errors.runtime}
+                                            </Text>
+                                        </Group>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Group className="mb-3" controlId="formBasicEmail">
+                                            <Label>Overview</Label>
+                                            <Control
+                                                type="text"
+                                                as="textarea"
+                                                name="overview"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.overview}
+                                                placeholder="Movie Description"
+                                            />
+                                            <Text className="text-danger">
+                                                {errors.overview && touched.overview && errors.overview}
+                                            </Text>
+                                        </Group>
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button type="reset" variant="secondary" onClick={() => handleReset()}>
+                                Reset
+                            </Button>
+                            <Button
+                                variant="primary"
+                                type="submit"
+                                disabled={isSubmitting}
+                                onClick={(e) => {
+                                    console.log('e: ', e);
+                                    handleSubmit(e);
+                                }}
+                            >
+                                Save Changes
+                            </Button>
+                        </Modal.Footer>
+                    </>
+                )}
+            </Formik>
         </Modal>
     );
 };

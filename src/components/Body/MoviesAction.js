@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row } from 'react-bootstrap';
-import { URL } from '../../utils';
+import { getAllGenders } from '../../utils';
 import { setCriteriaSortBy, setCriteriaSortOrder } from '../../store';
-import { compose, prop, flatten, uniq, map } from 'ramda';
 import GenreButtons from './GenreButtons';
-
-const getAllGenders = compose(uniq, flatten, compose(map, prop)('genres'));
 
 const order = {
     release_date: 'desc',
