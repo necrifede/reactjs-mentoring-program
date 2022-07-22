@@ -5,17 +5,17 @@ import AddPanel from "./AddPanel";
 import SearchPanel from "./SearchPanel";
 import SearchButtonPanel from "./SearchButtonPanel";
 import MovieDetails from "./MovieDetails";
-import { useSelectedMovie } from "../hooks/useSelectedMovie";
+import { useSelector } from "react-redux";
 
 const Header = ({ addMovie = () => {} }) => {
-    const [selectedMovie, setSelectedMovie] = useSelectedMovie();
+    const selectedMovie = useSelector((state) => state.selected);
 
     return (
         <Row>
             <Col>
                 {selectedMovie ? (
                     <>
-                        <SearchButtonPanel unselectMovie={() => setSelectedMovie(undefined)} />
+                        <SearchButtonPanel />
                         <MovieDetails movie={selectedMovie} />
                     </>
                 ) : (
