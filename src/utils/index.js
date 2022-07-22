@@ -2,9 +2,13 @@ import { compose, flatten, map, prop, uniq } from 'ramda';
 
 export * from './constants';
 
-export const formatMovies = ({ data = [], ...movie }) => ({
-    ...movie,
-    data: data.map(({ release_date, ...movie }) => ({ ...movie, release_date: new Date(release_date) })),
+export const formatMovies = ({ data = [], ...rest }) => ({
+    ...rest,
+    data: data.map(({ release_date, runtime, tagline, ...movie }) => ({
+        ...movie,
+        release_date: new Date(release_date),
+        runtime: runtime ?? undefined,
+    })),
 });
 
-export const getAllGenders = compose(uniq, flatten, compose(map, prop)('genres'));
+export const getAllGenres = compose(uniq, flatten, compose(map, prop)('genres'));

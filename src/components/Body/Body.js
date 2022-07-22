@@ -1,20 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import MovieList from './MovieList';
 import MoviesStatus from './MoviesStatus';
 import MoviesAction from './MoviesAction';
 
-const Body = ({ editMovie = () => {}, deleteMovie = () => {} }) => (
+const Body = () => (
     <>
         <MoviesAction />
         <MoviesStatus />
-        <MovieList deleteMovie={deleteMovie} editMovie={editMovie} />
+        <MovieList />
     </>
 );
 
-Body.propTypes = {
-    editMovie: PropTypes.func,
-    deleteMovie: PropTypes.func,
-};
+Body.propTypes = {};
 
 export default Body;

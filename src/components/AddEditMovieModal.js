@@ -1,28 +1,44 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Container, Form as FormBootstrap, Modal, Row } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
-import uniqid from 'uniqid';
-import { format, parse } from 'date-fns/esm';
 import { MovieShape } from './shapes';
-import { Field, Formik } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
-import { getAllGenders } from '../utils';
-import { prop } from 'ramda';
+import { getAllGenres } from '../utils';
+import { isEmpty, prop } from 'ramda';
+import { compose } from 'ramda';
+import { createMovie, updateMovie } from '../store/actions';
+import { format } from 'date-fns';
 const { Label, Text, Group, Control } = FormBootstrap;
 
 const SignupSchema = Yup.object().shape({
     title: Yup.string().required('Is required'),
-    poster_path: Yup.string().required('Is required'),
-    genres: Yup.array().min(1, "You can't leave this blank.").required("You can't leave this blank.").nullable(),
-    release_date: Yup.string(),
+    poster_path: Yup.string().url().required('Is required'),
+    genres: Yup.array()
+        .min(1, 'Select at least one genre to proceed.')
+        .required('Select at least one genre to proceed.')
+        .nullable(),
+    release_date: Yup.date().required('Is required'),
     vote_average: Yup.lazy((value) => (value === '' ? Yup.string() : Yup.number())),
     runtime: Yup.lazy((value) =>
         value === '' ? Yup.string().required('Is required') : Yup.number().required('Is required')
     ),
     overview: Yup.string().required('Is required'),
+});
+
+const rectifyFinalValues = ({ vote_average, runtime, ...values }) => ({
+    ...values,
+    vote_average: vote_average === '' ? 0 : vote_average,
+    runtime: runtime === '' ? 0 : runtime,
+});
+
+const rectifyInitialValues = ({ release_date, runtime, ...values }) => ({
+    ...values,
+    release_date: isEmpty(release_date) ? '' : format(release_date, 'yyyy-MM-dd'),
+    runtime: runtime ?? '',
 });
 
 const initials = {
@@ -35,23 +51,23 @@ const initials = {
     overview: '',
 };
 
-const AddEditMovieModal = ({ show = false, hideFunction = () => {}, actionMovie = () => {}, movie = initials }) => {
+const AddEditMovieModal = ({ show = false, hideFunction = () => {}, movie = initials }) => {
+    const dispatch = useDispatch();
     const movies = useSelector((state) => state.movies.data);
-    const allGenres = getAllGenders(movies);
+    const isAddingMovie = movie === initials;
+    const createUpdateMovie = compose(dispatch, isAddingMovie ? createMovie : updateMovie, rectifyFinalValues);
+    const allGenres = getAllGenres(movies);
     const genreOptions = allGenres?.map((genre) => ({ value: genre, label: genre })) ?? [];
 
     return (
         <Modal show={show} size="lg" onHide={hideFunction}>
             <Formik
-                initialValues={movie}
+                initialValues={rectifyInitialValues(movie)}
                 validationSchema={SignupSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                    console.log('values: ', values);
-                    // TODO: control vote_average and runtime when it is empty string ''
-                    setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2));
-                        setSubmitting(false);
-                    }, 400);
+                    createUpdateMovie(values);
+                    setSubmitting(false);
+                    hideFunction();
                 }}
             >
                 {({
@@ -67,7 +83,7 @@ const AddEditMovieModal = ({ show = false, hideFunction = () => {}, actionMovie 
                 }) => (
                     <>
                         <Modal.Header closeButton>
-                            <Modal.Title>Add/Edit Movie</Modal.Title>
+                            <Modal.Title>{`${isAddingMovie ? 'Add' : 'Edit'} Movie`}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Container>
@@ -89,7 +105,7 @@ const AddEditMovieModal = ({ show = false, hideFunction = () => {}, actionMovie 
                                         </Group>
                                     </Col>
                                     <Col>
-                                        <Group className="mb-3" controlId="formBasicEmail">
+                                        <Group className="mb-3" controlId="formBasicEmail1">
                                             <Label>Release Date</Label>
                                             <Control
                                                 type="date"
@@ -97,7 +113,7 @@ const AddEditMovieModal = ({ show = false, hideFunction = () => {}, actionMovie 
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 value={values.release_date}
-                                                placeholder="Select Date"
+                                                placeholder={'Select Date'}
                                             />
                                             <Text className="text-danger">
                                                 {errors.release_date && touched.release_date && errors.release_date}
@@ -146,13 +162,13 @@ const AddEditMovieModal = ({ show = false, hideFunction = () => {}, actionMovie 
                                             <Select
                                                 isMulti
                                                 closeMenuOnSelect={false}
-                                                // defaultValue={[]}
                                                 name="genres"
-                                                // onChange={(e) => {
-                                                //     console.log('e: ', e);
-                                                //     // handleChange(e.map(prop('value')));
-                                                //     setValues({ genres: e.map(prop('value')) });
-                                                // }}
+                                                defaultValue={
+                                                    movie?.genres?.map((genre) => ({
+                                                        label: genre,
+                                                        value: genre,
+                                                    })) ?? []
+                                                }
                                                 onChange={(option) =>
                                                     setFieldValue('genres', option.map(prop('value')))
                                                 }
@@ -194,6 +210,7 @@ const AddEditMovieModal = ({ show = false, hideFunction = () => {}, actionMovie 
                                                 onBlur={handleBlur}
                                                 value={values.overview}
                                                 placeholder="Movie Description"
+                                                rows="4"
                                             />
                                             <Text className="text-danger">
                                                 {errors.overview && touched.overview && errors.overview}
@@ -207,16 +224,8 @@ const AddEditMovieModal = ({ show = false, hideFunction = () => {}, actionMovie 
                             <Button type="reset" variant="secondary" onClick={() => handleReset()}>
                                 Reset
                             </Button>
-                            <Button
-                                variant="primary"
-                                type="submit"
-                                disabled={isSubmitting}
-                                onClick={(e) => {
-                                    console.log('e: ', e);
-                                    handleSubmit(e);
-                                }}
-                            >
-                                Save Changes
+                            <Button variant="primary" type="submit" disabled={isSubmitting} onClick={handleSubmit}>
+                                {isAddingMovie ? 'Create Movie' : 'Save Changes'}
                             </Button>
                         </Modal.Footer>
                     </>
@@ -229,7 +238,6 @@ const AddEditMovieModal = ({ show = false, hideFunction = () => {}, actionMovie 
 AddEditMovieModal.propTypes = {
     show: PropTypes.bool,
     hideFunction: PropTypes.func,
-    actionMovie: PropTypes.func,
     movie: PropTypes.shape(MovieShape),
 };
 

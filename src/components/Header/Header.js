@@ -7,7 +7,7 @@ import SearchButtonPanel from './SearchButtonPanel';
 import MovieDetails from './MovieDetails';
 import { useSelector } from 'react-redux';
 
-const Header = ({ addMovie = () => {} }) => {
+const Header = () => {
     const selectedMovie = useSelector((state) => state.selected);
 
     return (
@@ -20,7 +20,7 @@ const Header = ({ addMovie = () => {} }) => {
                     </>
                 ) : (
                     <>
-                        <AddPanel addMovie={addMovie} />
+                        <AddPanel />
                         <SearchPanel />
                     </>
                 )}
@@ -29,8 +29,6 @@ const Header = ({ addMovie = () => {} }) => {
     );
 };
 
-Header.propTypes = {
-    addMovie: PropTypes.func,
-};
+Header.propTypes = {};
 
 export default Header;

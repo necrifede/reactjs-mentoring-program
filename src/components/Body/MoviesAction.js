@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row } from 'react-bootstrap';
-import { getAllGenders } from '../../utils';
+import { getAllGenres } from '../../utils';
 import { setCriteriaSortBy, setCriteriaSortOrder } from '../../store';
 import GenreButtons from './GenreButtons';
 
@@ -15,7 +15,7 @@ const MoviesAction = () => {
     const dispatch = useDispatch();
     const [sortBy, setSortBy] = useState('release_date');
 
-    const genres = getAllGenders(movies);
+    const genres = getAllGenres(movies);
 
     useEffect(() => {
         dispatch(setCriteriaSortOrder(order[sortBy]));

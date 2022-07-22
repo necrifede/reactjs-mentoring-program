@@ -4,6 +4,9 @@ import { actionTypes as actionCriterias } from './reducerCriterias';
 
 export const fetchMoviesAction = (payload) => ({ type: actionMovies.FETCH_MOVIES, payload });
 export const setMoviesAction = (movies) => ({ type: actionMovies.SET_MOVIES, payload: movies });
+export const createMovie = (movie) => ({ type: actionMovies.CREATE_MOVIE, payload: movie });
+export const deleteMovie = (movie) => ({ type: actionMovies.DELETE_MOVIE, payload: movie });
+export const updateMovie = (movie) => ({ type: actionMovies.UPDATE_MOVIE, payload: movie });
 
 export const setSelectedMovie = (movie) => ({ type: actionSelectedMovie.SET_SELECTED_MOVIE, payload: movie });
 export const clearSelectedMovie = () => ({ type: actionSelectedMovie.CLEAR_SELECTED_MOVIE });
