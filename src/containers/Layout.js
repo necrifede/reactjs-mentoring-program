@@ -9,10 +9,23 @@ import { fetchMoviesAction } from '../store';
 const Layout = () => {
     const dispatch = useDispatch();
     const criterias = useSelector((state) => state.criterias);
+    const loadingCreate = useSelector((state) => state.loading?.createMovie);
+    const loadingUpdate = useSelector((state) => state.loading?.updateMovie);
+    const loadingDelete = useSelector((state) => state.loading?.deleteMovie);
 
     useEffect(() => {
-        dispatch(fetchMoviesAction({ criterias }));
-    }, [criterias]);
+        // TODO: refactor this part, how it could be?
+        if (
+            loadingCreate === false ||
+            loadingUpdate === false ||
+            loadingDelete === false ||
+            loadingCreate === undefined ||
+            loadingUpdate === undefined ||
+            loadingDelete === undefined
+        ) {
+            dispatch(fetchMoviesAction({ criterias }));
+        }
+    }, [criterias, loadingCreate, loadingUpdate, loadingDelete]);
 
     return (
         <Container>
