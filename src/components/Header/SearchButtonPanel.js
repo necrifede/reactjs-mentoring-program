@@ -27,5 +27,4 @@ SearchButtonPanel.propTypes = {
     unselectMovie: PropTypes.func,
 };
 
-// TODO: Test this without connect
 export default SearchButtonPanel;
