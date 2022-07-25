@@ -1,6 +1,6 @@
-import logo from "./logo.svg";
-import "./App.css";
-import Layout from "./containers/Layout";
+import logo from './logo.svg';
+import './App.css';
+import Layout from './containers/Layout';
 
 const App = () => <Layout />;
 

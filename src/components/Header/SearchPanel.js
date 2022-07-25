@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Button, Col, Row } from "react-bootstrap";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Button, Col, Row } from 'react-bootstrap';
 
 const SearchPanel = (props) => {
-    const [word, setWord] = useState("");
+    const [word, setWord] = useState('');
 
     return (
         <Row>

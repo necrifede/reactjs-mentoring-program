@@ -1,2 +1,2 @@
-export { store } from "./store";
-export * from "./actions";
+export { store } from './store';
+export * from './actions';

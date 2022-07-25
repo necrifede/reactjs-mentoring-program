@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Col, Row } from "react-bootstrap";
-import Logo from "./Logo";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Col, Row } from 'react-bootstrap';
+import Logo from './Logo';
 
 const Footer = (props) => {
     return (
