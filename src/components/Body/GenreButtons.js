@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
-import { compose } from "ramda";
-import { setFilterGenres } from "../store";
-import { Button } from "react-bootstrap";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { compose } from 'ramda';
+import { setFilterGenres } from '../../store';
+import { Button } from 'react-bootstrap';
 
 const GenreButtons = ({ genres = [] }) => {
     const genresSelected = useSelector((state) => state.criterias.filter);
@@ -15,7 +15,7 @@ const GenreButtons = ({ genres = [] }) => {
             {genres.map((genre) => (
                 <Button
                     key={genre}
-                    variant={`outline-${genresSelected.includes(genre) ? "secondary" : "primary"}`}
+                    variant={`outline-${genresSelected.includes(genre) ? 'secondary' : 'primary'}`}
                     className="m-1"
                     size="sm"
                     onClick={() =>

@@ -1,10 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Logo from "./Logo";
-import { Button } from "react-bootstrap";
-import { Search } from "react-bootstrap-icons";
-import { useDispatch } from "react-redux";
-import { clearSelectedMovie } from "../store";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Logo from '../Logo';
+import { Button } from 'react-bootstrap';
+import { Search } from 'react-bootstrap-icons';
+import { useDispatch } from 'react-redux';
+import { clearSelectedMovie } from '../../store';
 
 const SearchButtonPanel = () => {
     const dispatch = useDispatch();
@@ -27,5 +27,4 @@ SearchButtonPanel.propTypes = {
     unselectMovie: PropTypes.func,
 };
 
-// TODO: Test this without connect
 export default SearchButtonPanel;
