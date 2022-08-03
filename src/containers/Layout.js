@@ -5,8 +5,11 @@ import Body from '../components/Body/Body';
 import Footer from '../components/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMoviesAction } from '../store';
+import { Outlet, useParams } from 'react-router-dom';
 
 const Layout = () => {
+    let params = useParams();
+    console.log('params: ', params);
     const dispatch = useDispatch();
     const criterias = useSelector((state) => state.criterias);
     const loadingCreate = useSelector((state) => state.loading?.createMovie);
@@ -30,6 +33,7 @@ const Layout = () => {
     return (
         <Container>
             <Header />
+            {/* <Outlet /> */}
             <Body />
             <Footer />
         </Container>
