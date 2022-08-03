@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import queryString from 'query-string';
 import Container from 'react-bootstrap/Container';
 import Header from '../components/Header/Header';
 import Body from '../components/Body/Body';
@@ -13,7 +12,6 @@ import {
     setCriteriaSearchBy,
     setCriteriaSortBy,
     setFilterGenres,
-    setSelectedMovie,
 } from '../store';
 import { useParams, useSearchParams } from 'react-router-dom';
 import {
@@ -82,6 +80,7 @@ const Layout = () => {
     return (
         <Container>
             <Header />
+            {/* <Outlet /> */}
             <Body />
             <Footer />
         </Container>
