@@ -8,6 +8,7 @@ const NotFound = (props) => {
             <Row>
                 <Col>
                     <h1>Page not found!</h1>
+                    Resource is not available
                 </Col>
             </Row>
         </Container>

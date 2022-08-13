@@ -6,19 +6,28 @@ const common = require('./common.webpack');
 const development = {
     mode: 'development',
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, '..', 'dist'),
         filename: '[name].bundle.js',
+        publicPath: '/',
     },
+    devtool: 'source-map',
     plugins: [
         new HtmlWebpackPlugin({
-            template: './public/index.html',
+            template: path.resolve(__dirname, '..', 'public', 'index.html'),
+            favicon: path.resolve(__dirname, '..', 'public', 'favicon.ico'),
+            manifest: path.resolve(__dirname, '..', 'public', 'manifest.json'),
+            filename: 'index.html',
         }),
     ],
     devServer: {
-        port: 3002,
+        host: 'localhost',
+        port: 3000,
         hot: true,
         historyApiFallback: true,
         magicHtml: true,
+        static: path.resolve(__dirname, '..', 'dist'),
+        // open: true,
+        // compress: true,
     },
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { MovieShape } from '../shapes';
 import { Card, Col, Row } from 'react-bootstrap';
-import { getYear } from 'date-fns';
+import { getYear, isValid } from 'date-fns';
 
 const MovieDetails = ({
     movie: { title, genres, release_date, poster_path, overview, vote_average, runtime } = {},
@@ -18,7 +18,7 @@ const MovieDetails = ({
             <h6>{genres.join(', ')}</h6>
 
             <Row className="p-3">
-                <Col xs={2}>{getYear(release_date)}</Col>
+                <Col xs={2}>{isValid(release_date) ? getYear(release_date) : ''}</Col>
                 <Col>{runtime}</Col>
             </Row>
 
