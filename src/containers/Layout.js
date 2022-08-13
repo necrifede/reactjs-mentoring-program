@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import queryString from 'query-string';
 import Container from 'react-bootstrap/Container';
 import Header from '../components/Header/Header';
 import Body from '../components/Body/Body';
@@ -80,7 +81,6 @@ const Layout = () => {
     return (
         <Container>
             <Header />
-            {/* <Outlet /> */}
             <Body />
             <Footer />
         </Container>
