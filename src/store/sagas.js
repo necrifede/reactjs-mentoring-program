@@ -10,7 +10,7 @@ import { startLoading, stopLoading } from './reducerLoadings';
 const storeFetchedMovies = compose(put, setMoviesAction, formatMovies);
 const establishSelectedMovie = compose(put, setSelectedMovie, formatMovie);
 
-function* fetchMovies({ payload: { criterias } = {} }) {
+export function* fetchMovies({ payload: { criterias } = {} }) {
     try {
         yield startLoading('fetchMovies');
         const { data = {} } = yield call(get, `${url}?${queryString.stringify(criterias, { arrayFormat: 'comma' })}`);

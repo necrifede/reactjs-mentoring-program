@@ -7,7 +7,7 @@ const MovieList = () => {
     const movies = useSelector((state) => state.movies.data);
 
     return (
-        <Row xs={1} sm={2} md={3} className="g-4">
+        <Row xs={1} sm={2} md={3} className="g-4 all-movies">
             {movies.map((movie) => (
                 <MovieCard key={movie?.id} movie={movie} />
             ))}

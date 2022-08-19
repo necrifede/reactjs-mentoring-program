@@ -11,7 +11,7 @@ const MovieDetails = ({
         <Col md={4} className="p-4">
             <Card.Img variant="top" src={poster_path} />
         </Col>
-        <Col className="p-5">
+        <Col className="p-5 title-movie-selected">
             <h1>
                 {title} - <span className="h4">{vote_average}</span>
             </h1>

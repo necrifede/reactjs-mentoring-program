@@ -13,7 +13,6 @@ import {
     setCriteriaSearchBy,
     setCriteriaSortBy,
     setFilterGenres,
-    setSelectedMovie,
 } from '../store';
 import { useParams, useSearchParams } from 'react-router-dom';
 import {
