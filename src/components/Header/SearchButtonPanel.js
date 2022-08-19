@@ -14,7 +14,11 @@ const SearchButtonPanel = () => {
                 <Logo />
             </div>
             <div>
-                <Button variant="primary" onClick={() => setSearchParams({ movie: '' })}>
+                <Button
+                    variant="primary"
+                    data-testid="search-movie-button"
+                    onClick={() => setSearchParams({ movie: '' })}
+                >
                     <Search />
                 </Button>
             </div>
