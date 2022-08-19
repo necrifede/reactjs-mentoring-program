@@ -1,23 +1,23 @@
 module.exports = {
-    entry: "./src/init.js",
-    resolve: { extensions: [".js", ".jsx"] },
+    entry: './src/init.js',
+    resolve: { extensions: ['.js', '.jsx', '.json'] },
     module: {
         rules: [
             {
                 test: /\.jsx?$/,
-                loader: "babel-loader",
+                loader: 'babel-loader',
                 exclude: [/node_modules/],
                 options: {
-                    presets: ["@babel/preset-env", ["@babel/preset-react", { runtime: "automatic" }]],
+                    presets: ['@babel/preset-env', ['@babel/preset-react', { runtime: 'automatic' }]],
                 },
             },
             {
                 test: /\.(ttf|eot|svg|woff|png)$/,
-                loader: "file-loader",
+                loader: 'file-loader',
             },
             {
                 test: /\.css$/i,
-                use: ["style-loader", "css-loader", "sass-loader"],
+                use: ['style-loader', 'css-loader', 'sass-loader'],
             },
         ],
     },

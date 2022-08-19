@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import Logo from '../Logo';
 import { Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons';
-import { useDispatch } from 'react-redux';
-import { clearSelectedMovie } from '../../store';
+import { useSearchParams } from 'react-router-dom';
 
 const SearchButtonPanel = () => {
-    const dispatch = useDispatch();
+    const [, setSearchParams] = useSearchParams();
 
     return (
         <div className="d-flex">
@@ -15,7 +14,7 @@ const SearchButtonPanel = () => {
                 <Logo />
             </div>
             <div>
-                <Button variant="primary" onClick={() => dispatch(clearSelectedMovie())}>
+                <Button variant="primary" onClick={() => setSearchParams({ movie: '' })}>
                     <Search />
                 </Button>
             </div>

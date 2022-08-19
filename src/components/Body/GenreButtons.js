@@ -1,14 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { compose } from 'ramda';
-import { setFilterGenres } from '../../store';
+import { useSelector } from 'react-redux';
+import { append, compose, filter, ifElse, includes, join, o } from 'ramda';
 import { Button } from 'react-bootstrap';
+import { useSearchParams } from 'react-router-dom';
+
+const includeExcludeGenres = (genre) =>
+    compose(
+        join(','),
+        ifElse(
+            includes(genre),
+            filter((g) => g != genre),
+            append(genre)
+        )
+    );
 
 const GenreButtons = ({ genres = [] }) => {
+    const [, setSearchParams] = useSearchParams();
     const genresSelected = useSelector((state) => state.criterias.filter);
-    const dispatch = useDispatch();
-    const dispatchGenres = compose(dispatch, setFilterGenres);
+    const handleClick = (genre) => () =>
+        setSearchParams({
+            genre: includeExcludeGenres(genre)(genresSelected),
+        });
 
     return (
         <>
@@ -18,13 +31,7 @@ const GenreButtons = ({ genres = [] }) => {
                     variant={`outline-${genresSelected.includes(genre) ? 'secondary' : 'primary'}`}
                     className="m-1"
                     size="sm"
-                    onClick={() =>
-                        dispatchGenres(
-                            genresSelected.includes(genre)
-                                ? genresSelected.filter((g) => g != genre)
-                                : [...genresSelected, genre]
-                        )
-                    }
+                    onClick={handleClick(genre)}
                 >
                     {genre}
                 </Button>

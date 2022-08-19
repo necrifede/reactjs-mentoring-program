@@ -6,16 +6,15 @@ import DeleteModal from '../DeleteModal';
 import AddEditMovieModal from '../AddEditMovieModal';
 import { MovieShape } from '../shapes';
 import { getYear, isValid } from 'date-fns/esm';
-import { useDispatch } from 'react-redux';
-import { setSelectedMovie } from '../../store';
 import GenreButtons from './GenreButtons';
+import { useSearchParams } from 'react-router-dom';
 
 const toggleButtonId = 'dropdown-toggle-button-actions';
 
 const MovieCard = ({ movie: { id, title = '', genres = [], release_date, poster_path = '', ...movie } = {} }) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
-    const dispatch = useDispatch();
+    const [, setSearchParams] = useSearchParams();
 
     return (
         <Col>
@@ -29,7 +28,7 @@ const MovieCard = ({ movie: { id, title = '', genres = [], release_date, poster_
                         !classes.contains('btn-outline-secondary') &&
                         !classes.contains('btn-outline-primary')
                     ) {
-                        dispatch(setSelectedMovie({ id, title, genres, release_date, poster_path, ...movie }));
+                        setSearchParams({ movie: id });
                     }
                 }}
             >

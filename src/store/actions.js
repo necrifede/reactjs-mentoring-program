@@ -3,6 +3,7 @@ import { actionTypes as actionSelectedMovie } from './reducerSelectedMovie';
 import { actionTypes as actionCriterias } from './reducerCriterias';
 
 export const fetchMoviesAction = (payload) => ({ type: actionMovies.FETCH_MOVIES, payload });
+export const fetchOneMovieAction = (payload) => ({ type: actionMovies.FETCH_MOVIE, payload });
 export const setMoviesAction = (movies) => ({ type: actionMovies.SET_MOVIES, payload: movies });
 export const createMovie = (movie) => ({ type: actionMovies.CREATE_MOVIE, payload: movie });
 export const deleteMovie = (movie) => ({ type: actionMovies.DELETE_MOVIE, payload: movie });
@@ -14,3 +15,5 @@ export const clearSelectedMovie = () => ({ type: actionSelectedMovie.CLEAR_SELEC
 export const setFilterGenres = (payload) => ({ type: actionCriterias.SET_CRITERIA_FILTER, payload });
 export const setCriteriaSortBy = (payload) => ({ type: actionCriterias.SET_CRITERIA_SORT_BY, payload });
 export const setCriteriaSortOrder = (payload) => ({ type: actionCriterias.SET_CRITERIA_SORT_ORDER, payload });
+export const setCriteriaSearchBy = (payload) => ({ type: actionCriterias.SET_CRITERIA_SEARCH_BY, payload });
+export const setCriteriaSearch = (payload) => ({ type: actionCriterias.SET_CRITERIA_SEARCH, payload });

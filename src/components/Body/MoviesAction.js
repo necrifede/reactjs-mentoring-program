@@ -2,24 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row } from 'react-bootstrap';
 import { getAllGenres } from '../../utils';
-import { setCriteriaSortBy, setCriteriaSortOrder } from '../../store';
+import { setCriteriaSortOrder } from '../../store';
 import GenreButtons from './GenreButtons';
+import { useSearchParams } from 'react-router-dom';
 
 const order = {
     release_date: 'desc',
     vote_average: 'desc',
+    title: 'asc',
 };
 
 const MoviesAction = () => {
     const movies = useSelector((state) => state.movies.data);
+    const sortBy = useSelector((state) => state.criterias.sortBy);
     const dispatch = useDispatch();
-    const [sortBy, setSortBy] = useState('release_date');
+    const [, setSearchParams] = useSearchParams();
 
     const genres = getAllGenres(movies);
 
     useEffect(() => {
         dispatch(setCriteriaSortOrder(order[sortBy]));
-        dispatch(setCriteriaSortBy(sortBy));
     }, [sortBy]);
 
     return (
@@ -29,9 +31,10 @@ const MoviesAction = () => {
             </Col>
             <Col sm="3">
                 Sort By:
-                <select onChange={(e) => setSortBy(e.target.value)} value={sortBy}>
+                <select onChange={(e) => setSearchParams({ sortBy: e.target.value })} value={sortBy}>
                     <option value="release_date">Release Date</option>
                     <option value="vote_average">Rating</option>
+                    <option value="title">Title</option>
                 </select>
             </Col>
         </Row>

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
@@ -11,11 +12,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <ErrorBoundary>
-                <App />
-            </ErrorBoundary>
-        </Provider>
+        <BrowserRouter>
+            <Provider store={store}>
+                <ErrorBoundary>
+                    <App />
+                </ErrorBoundary>
+            </Provider>
+        </BrowserRouter>
     </React.StrictMode>
 );
 
